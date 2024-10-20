@@ -14,10 +14,30 @@ pipeline {
             }
         }
         
+        stage('Check Tools') {
+            steps {
+                bat 'java -version'
+                bat 'mvn --version'
+                bat 'node --version'
+                bat 'npm --version'
+                bat 'docker --version'
+                bat 'kubectl version --client'
+            }
+        }
+        
         stage('Build Backend') {
             steps {
                 dir('backend') {
-                    bat 'mvn clean package -DskipTests'
+                    bat 'mvn clean package -DskipTests -U -X'
+                    bat 'dir target'
+                }
+            }
+        }
+        
+        stage('Test Backend') {
+            steps {
+                dir('backend') {
+                    bat 'mvn test'
                 }
             }
         }
@@ -27,14 +47,6 @@ pipeline {
                 dir('frontend') {
                     bat 'npm install'
                     bat 'npm run build'
-                }
-            }
-        }
-        
-        stage('Test Backend') {
-            steps {
-                dir('backend') {
-                    bat 'mvn test'
                 }
             }
         }
@@ -67,6 +79,8 @@ pipeline {
         
         stage('Deploy to Kubernetes') {
             steps {
+                bat "kubectl get nodes"
+                bat "kubectl get pods"
                 bat "kubectl set image deployment/myapp-deployment myapp-container=${DOCKER_IMAGE}:${DOCKER_TAG}"
                 bat "kubectl rollout status deployment/myapp-deployment"
             }
@@ -79,6 +93,9 @@ pipeline {
         }
         failure {
             echo 'Pipeline failed!'
+        }
+        always {
+            bat 'docker system prune -f'
         }
     }
 }
