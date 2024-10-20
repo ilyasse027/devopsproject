@@ -48,7 +48,8 @@ pipeline {
         
         stage('Deploy to Kubernetes') {
             steps {
-                sh "kubectl set image deployment/your-deployment-name your-container-name=${DOCKER_IMAGE}:${DOCKER_TAG}"
+                sh "kubectl set image deployment/myapp-deployment myapp-container=${DOCKER_IMAGE}:${DOCKER_TAG}"
+                sh "kubectl rollout status deployment/myapp-deployment"
             }
         }
     }
