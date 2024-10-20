@@ -14,12 +14,18 @@ pipeline {
             }
         }
         
-        stage('Build') {
+        stage('Install Dependencies') {
             steps {
                 bat 'npm install'
-                bat 'npm run build'
             }
         }
+        
+        // Uncomment this stage if you've added a build script to package.json
+        // stage('Build') {
+        //     steps {
+        //         bat 'npm run build'
+        //     }
+        // }
         
         stage('Test') {
             steps {
