@@ -14,21 +14,36 @@ pipeline {
             }
         }
         
-        stage('Install Dependencies') {
+        stage('Build Backend') {
             steps {
-                bat 'npm install'
+                dir('backend') {
+                    bat 'mvn clean package -DskipTests'
+                }
             }
         }
         
-        stage('Build') {
+        stage('Build Frontend') {
             steps {
-                bat 'npm run build'
+                dir('frontend') {
+                    bat 'npm install'
+                    bat 'npm run build'
+                }
             }
         }
         
-        stage('Test') {
+        stage('Test Backend') {
             steps {
-                bat 'npm test -- --watchAll=false'
+                dir('backend') {
+                    bat 'mvn test'
+                }
+            }
+        }
+        
+        stage('Test Frontend') {
+            steps {
+                dir('frontend') {
+                    bat 'npm test -- --watchAll=false'
+                }
             }
         }
         
