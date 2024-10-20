@@ -20,16 +20,15 @@ pipeline {
             }
         }
         
-        // Uncomment this stage if you've added a build script to package.json
-        // stage('Build') {
-        //     steps {
-        //         bat 'npm run build'
-        //     }
-        // }
+        stage('Build') {
+            steps {
+                bat 'npm run build'
+            }
+        }
         
         stage('Test') {
             steps {
-                bat 'npm test'
+                bat 'npm test -- --watchAll=false'
             }
         }
         
