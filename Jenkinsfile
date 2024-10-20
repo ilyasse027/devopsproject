@@ -2,9 +2,9 @@ pipeline {
     agent any
     
     environment {
-        DOCKER_IMAGE = "your-dockerhub-username/your-app-name"
+        DOCKER_IMAGE = "ilyassepro/devopsproject"
         DOCKER_TAG = "${BUILD_NUMBER}"
-        DOCKER_CREDENTIALS_ID = 'your-dockerhub-credentials-id'
+        DOCKER_CREDENTIALS_ID = 'docker-hub-credentials'
     }
     
     stages {
