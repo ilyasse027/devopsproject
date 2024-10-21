@@ -42,7 +42,9 @@ pipeline {
         stage('Test Backend') {
             steps {
                 dir('backend') {
-                    bat 'mvn test'
+                    withMaven(maven: 'Maven') { // Added withMaven here as well
+                        bat 'mvn test'
+                    }
                 }
             }
         }
