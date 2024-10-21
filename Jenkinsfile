@@ -61,7 +61,10 @@ pipeline {
         stage('Test Frontend') {
             steps {
                 dir('frontend') {
-                    bat 'npm test -- --watchAll=false'
+                    bat 'npm install'
+            // Make sure the directory for tests is recognized
+                    bat 'npm test -- --testPathPattern="src/__tests__" --watchAll=false'
+        
                 }
             }
         }
