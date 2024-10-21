@@ -8,7 +8,7 @@ pipeline {
     }
     
     stages {
-        stage('Clean Workspace') { // Ensures Jenkins starts fresh every time
+        stage('Clean Workspace') {
             steps {
                 deleteDir()
             }
@@ -67,7 +67,7 @@ pipeline {
         stage('Test Frontend') {
             steps {
                 dir('frontend') {
-                    bat 'npm test -- --watchAll=false --passWithNoTests' // Simplified test command
+                    bat 'npm test -- --watchAll=false --passWithNoTests'
                 }
             }
         }
@@ -100,6 +100,7 @@ pipeline {
                 }
             }
         }
+    }
     
     post {
         success {
