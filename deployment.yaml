@@ -16,7 +16,14 @@ spec:
       - name: myapp-container
         image: ilyassepro/devopsproject:latest
         ports:
-        - containerPort: 3000
+        - containerPort: 8080
+        env:
+        - name: SPRING_DATASOURCE_URL
+          value: jdbc:mysql://db:3306/yourdbname
+        - name: SPRING_DATASOURCE_USERNAME
+          value: root
+        - name: SPRING_DATASOURCE_PASSWORD
+          value: your_password
 ---
 apiVersion: v1
 kind: Service
@@ -28,5 +35,5 @@ spec:
   ports:
     - protocol: TCP
       port: 80
-      targetPort: 3000
-  type: LoadBalancer  
+      targetPort: 8080
+  type: LoadBalancer
