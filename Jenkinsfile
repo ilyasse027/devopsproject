@@ -17,8 +17,10 @@ pipeline {
         stage('Check Tools') {
             steps {
                 bat 'java -version'
-                def mvnHome = tool name: 'Maven', type: 'maven'
-                bat "${mvnHome}/bin/mvn --version"
+                script {
+                    def mvnHome = tool name: 'Maven', type: 'maven'
+                    bat "${mvnHome}/bin/mvn --version"
+                }
                 bat 'node --version'
                 bat 'npm --version'
                 bat 'docker --version'
