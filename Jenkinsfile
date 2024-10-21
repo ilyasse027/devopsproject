@@ -31,7 +31,9 @@ pipeline {
         stage('Build Backend') {
             steps {
                 dir('backend') {
-                    bat 'mvn clean package -DskipTests -U -X'
+                    withMaven(maven: 'Maven') { // Use the exact name from the configuration
+                        bat 'mvn clean package -DskipTests -U -X'
+                    }
                     bat 'dir target'
                 }
             }
