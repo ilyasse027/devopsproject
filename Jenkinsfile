@@ -92,13 +92,14 @@ pipeline {
         
         stage('Deploy to Kubernetes') {
             steps {
-                bat "kubectl get nodes"
-                bat "kubectl get pods"
-                bat "kubectl set image deployment/myapp-deployment myapp-container=${DOCKER_IMAGE}:${DOCKER_TAG}"
-                bat "kubectl rollout status deployment/myapp-deployment"
+                withCredentials([file(credentialsId: 'kubernetes-config', variable: 'KUBECONFIG')]) {
+                    bat "kubectl --kubeconfig=%KUBECONFIG% get nodes"
+                    bat "kubectl --kubeconfig=%KUBECONFIG% get pods"
+                    bat "kubectl --kubeconfig=%KUBECONFIG% set image deployment/myapp-deployment myapp-container=${DOCKER_IMAGE}:${DOCKER_TAG}"
+                    bat "kubectl --kubeconfig=%KUBECONFIG% rollout status deployment/myapp-deployment"
+                }
             }
         }
-    }
     
     post {
         success {
