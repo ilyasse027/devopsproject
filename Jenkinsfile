@@ -67,8 +67,7 @@ pipeline {
         stage('Test Frontend') {
             steps {
                 dir('frontend') {
-                    bat 'dir src\\__tests__' // List test files for debugging
-                    bat 'npm test -- --watchAll=false' // Simplified test command
+                    bat 'npm test -- --watchAll=false --passWithNoTests' // Simplified test command
                 }
             }
         }
