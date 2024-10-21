@@ -8,6 +8,12 @@ pipeline {
     }
     
     stages {
+        stage('Clean Workspace') { // Ensures Jenkins starts fresh every time
+            steps {
+                deleteDir()
+            }
+        }
+        
         stage('Checkout') {
             steps {
                 checkout scm
@@ -31,7 +37,7 @@ pipeline {
         stage('Build Backend') {
             steps {
                 dir('backend') {
-                    withMaven(maven: 'Maven') { // Use the exact name from the configuration
+                    withMaven(maven: 'Maven') { 
                         bat 'mvn clean package -DskipTests -U -X'
                     }
                     bat 'dir target'
@@ -42,7 +48,7 @@ pipeline {
         stage('Test Backend') {
             steps {
                 dir('backend') {
-                    withMaven(maven: 'Maven') { // Added withMaven here as well
+                    withMaven(maven: 'Maven') { 
                         bat 'mvn test'
                     }
                 }
@@ -61,10 +67,8 @@ pipeline {
         stage('Test Frontend') {
             steps {
                 dir('frontend') {
-                    bat 'npm install'
-            // Make sure the directory for tests is recognized
-                    bat 'npm test -- --testPathPattern="src/__tests__" --watchAll=false'
-        
+                    bat 'dir src\\__tests__' // List test files for debugging
+                    bat 'npm test -- --watchAll=false' // Simplified test command
                 }
             }
         }
